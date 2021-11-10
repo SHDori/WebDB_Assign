@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -34,6 +34,21 @@
                         </li>
                     </ul>
                     <form class="d-flex">
+                        <input
+                                class="form-control me-sm-2"
+                                type="text"
+                                placeholder="Search"
+                        />
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+                            Search
+                        </button>
+                    </form>
+                    <form class="d-flex">
+                        <a href="/posting">
+                            <button class="btn btn-outline-dark" type="button">
+                                등록하기
+                            </button>
+                        </a>
                         <button class="btn btn-outline-dark" type="submit">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
@@ -47,8 +62,8 @@
         <header class="bg-dark py-5">
             <div class="container px-4 px-lg-5 my-5">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Shop in style</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">With this shop hompeage template</p>
+                    <h1 class="display-4 fw-bolder">웹DB 중고장터</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">201636403 김승환</p>
                 </div>
             </div>
         </header>
@@ -56,23 +71,30 @@
         <section class="py-5">
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <div class="col mb-5">
+
+                    <div class="col mb-5" th:each="post : ${posts}">
                         <div class="card h-100">
+
                             <!-- Product image-->
-                            <img class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            <div th:switch="${post.kindOfItem}">
+                                <img th:case = "식품" class="card-img-top" src="https://cdn.pixabay.com/photo/2016/11/23/00/11/beans-1851374_960_720.jpg" alt="..." />
+                                <img th:case = "운동" class="card-img-top" src="https://cdn.pixabay.com/photo/2015/01/10/17/32/physiotherapy-595529_960_720.jpg" alt="..." />
+                                <img th:case = "*"class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="..." />
+                            </div>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">Fancy Product</h5>
+                                    <h5 class="fw-bolder"><span th:text="${post.item}"></span></h5>
                                     <!-- Product price-->
-                                    $40.00 - $80.00
+                                    <span th:text="${post.price}"></span>
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#" th:href="@{/api/board/posts/{id}(id=${post.idx})}">View options</a></div>
                             </div>
+
                         </div>
                     </div>
                 </div>

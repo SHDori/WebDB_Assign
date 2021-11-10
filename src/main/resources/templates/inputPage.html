@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/yeti/bootstrap.min.css"
+      integrity="sha384-mLBxp+1RMvmQmXOjBzRjqqr0dP9VHU2tb3FK6VB0fJN/AOu7/y+CAeYeWJZ4b3ii"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body>
+    <!-- nav 바-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a class="nav-link active" href="#"
+                >Home
+                <span class="visually-hidden">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Features</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Pricing</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+                href="#"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+                >Dropdown</a
+              >
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="#">Separated link</a>
+              </div>
+            </li>
+          </ul>
+          <form class="d-flex">
+            <input
+              class="form-control me-sm-2"
+              type="text"
+              placeholder="Search"
+            />
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">
+              Search
+            </button>
+          </form>
+        </div>
+      </div>
+    </nav>
+    <div style="margin: 50px">
+      <form>
+        <fieldset>
+          <h1>게시글 작성화면</h1>
+
+          <!-- 게시글 제목 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >게시글 제목</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="title"
+              aria-describedby="emailHelp"
+              placeholder="ex> 컵라면 팔아요"
+            />
+          </div>
+          <!-- 작성자 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >작성자</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="writer"
+              aria-describedby="emailHelp"
+              placeholder="ex> 홍길동"
+            />
+          </div>
+
+          <!-- 물건종류 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >물건 유형</label
+            >
+            <select class="form-select" id="kindOfItem">
+              <option>식품</option>
+              <option>운동</option>
+            </select>
+          </div>
+
+          <!-- 물건명 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >물건 명</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="item"
+              aria-describedby="emailHelp"
+              placeholder="ex>참깨라면 컵라면"
+            />
+          </div>
+          <!-- 판매가격 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >판매가격</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="price"
+              aria-describedby="emailHelp"
+              placeholder="ex>1500"
+            />
+          </div>
+          <!-- 거래장소 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >거래 장소</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="tradePlace"
+              aria-describedby="emailHelp"
+              placeholder="ex>가천대학교"
+            />
+          </div>
+          <!-- 내용설명 -->
+          <div class="form-group">
+            <label class="form-label mt-4"
+              >게시글 내용</label
+            >
+            <textarea class="form-control" id="content" rows="3"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-save">
+            등록하기
+          </button>
+        </fieldset>
+      </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+      var main = {
+        init: function () {
+          var _this = this;
+          $("#btn-save").on("click", function () {
+            _this.save();
+          });
+        },
+
+        save: function () {
+          var data = {
+            title: $("#title").val(),
+            writer: $("#writer").val(),
+            kindOfItem: $("#kindOfItem").val(),
+            item: $("#item").val(),
+            price: $("#price").val(),
+            tradePlace: $("#tradePlace").val(),
+            content: $("#content").val()
+          };
+
+          $.ajax({
+            type: "POST",
+            url: "/api/board/posts",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+          })
+                  .done(function () {
+                    alert("글이 등록되었습니다.");
+                    window.location.href = "/";
+                  })
+                  .fail(function (error) {
+                    alert(JSON.stringify(error));
+                  });
+        }
+      };
+
+      main.init();
+    </script>
+
+
+  </body>
+
+
+</html>
