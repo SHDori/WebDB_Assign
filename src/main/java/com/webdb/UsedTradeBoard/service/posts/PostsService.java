@@ -64,4 +64,10 @@ public class PostsService {
         return postsRepository.findAllNotDeleted().stream().map(PostsListResponseDTO::new).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public List<PostsListResponseDTO> findByKeyword(String keyword){
+        return postsRepository.findByKeyword(keyword).stream().map(PostsListResponseDTO::new).collect(Collectors.toList());
+    }
+
+
 }

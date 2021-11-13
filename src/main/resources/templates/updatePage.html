@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -81,111 +81,75 @@
     <div style="margin: 50px">
       <form>
         <fieldset>
-          <h1>게시글 작성화면</h1>
+          <h1>게시글 수정</h1>
+
+          <div class="form-group">
+            <input id="idx" type="hidden" th:value="${post.idx}" />
+          </div>
 
           <!-- 게시글 제목 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >게시글 제목</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="title"
-              aria-describedby="emailHelp"
-              placeholder="ex> 컵라면 팔아요"
-            />
+            <label class="form-label mt-4">게시글 제목</label>
+            <input id="title" th:value="${post.title}" />
           </div>
           <!-- 작성자 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >작성자</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="writer"
-              aria-describedby="emailHelp"
-              placeholder="ex> 홍길동"
-            />
+            <label class="form-label mt-4">작성자</label>
+            <input id="writer" th:value="${post.writer}" />
           </div>
 
           <!-- 물건종류 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >물건 유형</label
-            >
-            <select class="form-select" id="kindOfItem">
-              <option>식품</option>
-              <option>운동</option>
-            </select>
+            <label class="form-label mt-4">물건 유형</label>
+            <input id="kindOfItem" th:value="${post.kindOfItem}" />
           </div>
 
           <!-- 물건명 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >물건 명</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="item"
-              aria-describedby="emailHelp"
-              placeholder="ex>참깨라면 컵라면"
-            />
+            <label class="form-label mt-4">물건 명</label>
+            <input id="item" th:value="${post.item}" />
           </div>
           <!-- 판매가격 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >판매가격</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="price"
-              aria-describedby="emailHelp"
-              placeholder="ex>1500"
-            />
+            <label class="form-label mt-4">판매가격</label>
+            <input id="price" th:value="${post.price}" />
           </div>
           <!-- 거래장소 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >거래 장소</label
-            >
-            <input
-              type="text"
-              class="form-control"
-              id="tradePlace"
-              aria-describedby="emailHelp"
-              placeholder="ex>가천대학교"
-            />
+            <label class="form-label mt-4">거래 장소</label>
+            <input id="tradePlace" th:value="${post.tradePlace}" />
           </div>
           <!-- 내용설명 -->
           <div class="form-group">
-            <label class="form-label mt-4"
-              >게시글 내용</label
-            >
-            <textarea class="form-control" id="content" rows="3"></textarea>
+            <label class="form-label mt-4">게시글 내용</label>
+            <input id="content" th:value="${post.content}" />
           </div>
 
-          <button type="submit" class="btn btn-primary" id="btn-save">
-            등록하기
+          <button type="submit" class="btn btn-primary" id="btn-update">
+            수정하기
+          </button>
+          <button type="submit" class="btn btn-danger" id="btn-delete">
+            삭제하기
           </button>
         </fieldset>
       </form>
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     <script>
       var main = {
         init: function () {
           var _this = this;
-          $("#btn-save").on("click", function () {
-            _this.save();
+          $("#btn-update").on("click", function () {
+            _this.update();
+          });
+          $("#btn-delete").on("click", function () {
+            _this.delete();
           });
         },
 
-        save : function () {
+        update: function () {
           var data = {
             title: $("#title").val(),
             writer: $("#writer").val(),
@@ -195,27 +159,45 @@
             tradePlace: $("#tradePlace").val(),
             content: $("#content").val()
           };
+          var id = $("#idx").val();
 
           $.ajax({
-            type: 'POST',
-            url: "/api/board/posts",
+            type: "PUT",
+            url: "/api/board/posts/" + id,
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(data),
-          }).done(function () {
-            alert('글이 등록되었습니다.');
-            location.replace("http://localhost:8080/");
-          }).fail(function (error) {
-            alert(JSON.stringify(error));
-          });
-        }
+          })
+            .done(function () {
+              alert("글이 수정되었습니다.");
+              location.replace("http://localhost:8080/");
+            })
+            .fail(function (error) {
+              alert(JSON.stringify(error));
+            });
+        },
+
+        delete: function () {
+          var id = $("#idx").val();
+
+          $.ajax({
+            type: "PUT",
+            url: "/api/board/posts/" + id + "/isDelete",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+          })
+            .done(function () {
+              alert("글이 삭제되었습니다.");
+              // window.location.href="http://localhost:8080/";
+              location.replace("http://localhost:8080/");
+            })
+            .fail(function (error) {
+              alert(JSON.stringify(error));
+            });
+        },
       };
 
       main.init();
     </script>
-
-
   </body>
-
-
 </html>

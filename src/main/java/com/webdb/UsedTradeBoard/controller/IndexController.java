@@ -22,6 +22,12 @@ public class IndexController {
         return "index";
     }
 
+    @GetMapping("/api/board/search/{keyword}")
+    public String search(@PathVariable String keyword, Model model){
+        model.addAttribute("posts",postsService.findByKeyword(keyword));
+        return "search";
+    }
+
     @GetMapping("/posting")
     public String posting(Model model){
 
@@ -38,6 +44,16 @@ public class IndexController {
         model.addAttribute("post",postsResponseDTO);
 
         return "viewPage";
+
+    }
+
+    @GetMapping("/api/board/posts/update/{idx}")
+    public String updating(@PathVariable Long idx, Model model){
+
+        PostsResponseDTO postsResponseDTO = postsService.findById(idx);
+        model.addAttribute("post",postsResponseDTO);
+
+        return "updatePage";
 
     }
 }
